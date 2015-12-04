@@ -29,7 +29,6 @@ class ConnectManager : NSObject {
         self.serviceAdvertiser.startAdvertisingPeer()
         self.serviceBrowser.delegate = self
         self.serviceBrowser.startBrowsingForPeers()
-        
     }
     
     deinit {
@@ -50,7 +49,7 @@ class ConnectManager : NSObject {
             var toPeers = [MCPeerID]()
             for i in 0..<session.connectedPeers.count{
                 if toSendList[i]{
-                    toPeers.append(session.connectedPeers[i-1])
+                    toPeers.append(session.connectedPeers[i])
                 }
             }
             var error : NSError?
@@ -69,7 +68,7 @@ class ConnectManager : NSObject {
             var toPeers = [MCPeerID]()
             for i in 0..<session.connectedPeers.count{
                 if toSendList[i]{
-                    toPeers.append(session.connectedPeers[i-1])
+                    toPeers.append(session.connectedPeers[i])
                 }
             }
             if let imageData = UIImagePNGRepresentation(image) {

@@ -19,6 +19,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         for i in 0...3{
             toSendList[i] = false
         }
+        connect.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -86,7 +87,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func textSendTapped(sender: AnyObject) {
-            connect.sendText(self.textView.text, toSendList: toSendList)
+        connect.sendText(self.textView.text, toSendList: toSendList)
         resetButton()
     }
     
@@ -159,26 +160,33 @@ extension ViewController : ConnectManagerDelegate {
     
     func connectedDevicesChanged(manager: ConnectManager, connectedDevices: [String]) {
         NSOperationQueue.mainQueue().addOperationWithBlock {
-            for i in 1...connectedDevices.count{
+            for i in 1...4{
                 switch i{
-                case 1: self.button1.setTitle(connectedDevices[0], forState: UIControlState.Normal)
-                case 2: self.button2.setTitle(connectedDevices[1], forState: UIControlState.Normal)
-                case 3: self.button3.setTitle(connectedDevices[2], forState: UIControlState.Normal)
-                case 4: self.button4.setTitle(connectedDevices[3], forState: UIControlState.Normal)
-                default:break
-                }
-            }
-            for i in connectedDevices.count...4{
-                switch i{
-                case 1: self.button1.setTitle("1", forState: UIControlState.Normal)
-                case 2: self.button2.setTitle("2", forState: UIControlState.Normal)
-                case 3: self.button3.setTitle("3", forState: UIControlState.Normal)
-                case 4: self.button4.setTitle("4", forState: UIControlState.Normal)
+                case 1:
+                    if connectedDevices.count > 0{
+                        self.button1.setTitle(connectedDevices[0], forState: UIControlState.Normal)}
+                    else{
+                        self.button1.setTitle("1", forState: UIControlState.Normal)}
+                case 2:
+                    if connectedDevices.count > 1{
+                        self.button2.setTitle(connectedDevices[1], forState: UIControlState.Normal)}
+                    else{
+                        self.button2.setTitle("2", forState: UIControlState.Normal)}
+                case 3:
+                    if connectedDevices.count > 2{
+                        self.button3.setTitle(connectedDevices[2], forState: UIControlState.Normal)}
+                    else{
+                        self.button3.setTitle("3", forState: UIControlState.Normal)}
+                case 4:
+                    if connectedDevices.count > 3{
+                        self.button4.setTitle(connectedDevices[3], forState: UIControlState.Normal)}
+                    else{
+                        self.button4.setTitle("4", forState: UIControlState.Normal)}
                 default:break
                 }
             }
         }
-        NSLog("connectedDevicesChanged")
+        NSLog("%@", "-------------------connectedDevicesChanged----------------------")
     }
     
     func textChanged(manager: ConnectManager, text: String) {
