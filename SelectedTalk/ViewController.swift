@@ -11,12 +11,12 @@ import UIKit
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
 
     let connect = ConnectManager()
-    var toSendList = [Bool]()
+    var toSendList = [false, false, false, false]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        for i in 1...4{
+        for i in 0...3{
             toSendList[i] = false
         }
     }
@@ -31,19 +31,54 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var button4: UIButton!
 
     @IBAction func button1Tapped(sender: AnyObject) {
-        toSendList[1] = true
+        toSendList[0] = !toSendList[0]
+        if toSendList[0]{
+            button1.layer.borderColor = UIColor.redColor().CGColor
+            button1.layer.borderWidth = 10
+        }else{
+            button1.layer.borderWidth = 0
+        }
     }
     
     @IBAction func button2Tapped(sender: AnyObject) {
-        toSendList[2] = true
+        toSendList[1] = !toSendList[1]
+        if toSendList[1]{
+            button2.layer.borderColor = UIColor.redColor().CGColor
+            button2.layer.borderWidth = 10
+        }else{
+            button2.layer.borderWidth = 0
+        }
+
     }
     
     @IBAction func button3Tapped(sender: AnyObject) {
-        toSendList[3] = true
+        toSendList[2] = !toSendList[2]
+        if toSendList[2]{
+            button3.layer.borderColor = UIColor.redColor().CGColor
+            button3.layer.borderWidth = 10
+        }else{
+            button3.layer.borderWidth = 0
+        }
     }
     
     @IBAction func button4Tapped(sender: AnyObject) {
-        toSendList[4] = true
+        toSendList[3] = !toSendList[3]
+        if toSendList[3]{
+            button4.layer.borderColor = UIColor.redColor().CGColor
+            button4.layer.borderWidth = 10
+        } else{
+            button4.layer.borderWidth = 0
+        }
+    }
+    
+    func resetButton() {
+        for i in 0..<toSendList.count{
+            toSendList[i] = false
+        }
+        button1.layer.borderWidth = 0
+        button2.layer.borderWidth = 0
+        button3.layer.borderWidth = 0
+        button4.layer.borderWidth = 0
     }
     
     @IBAction func refreshTapped(sender: AnyObject) {
@@ -52,11 +87,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBAction func textSendTapped(sender: AnyObject) {
             connect.sendText(self.textView.text, toSendList: toSendList)
+        resetButton()
     }
     
     @IBAction func imageSendTapped(sender: AnyObject) {
         if let img = self.imageView.image{
             connect.sendImage(img, toSendList: toSendList)
+            resetButton()
         }
     }
     
@@ -64,6 +101,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         accessCameraRoll()
     }
     
+    @IBAction func openTapped(sender: AnyObject) {
+        acccessTextTable()
+    }
+    
+    @IBAction func saveTapped(sender: AnyObject) {
+        saveText(textView.text)
+    }
     @IBOutlet weak var textView: UITextView!
     
     @IBOutlet weak var imageView: UIImageView!
@@ -82,6 +126,30 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.imageView.image = image
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.imageView.image = image
+    }
+    
+    func acccessTextTable(){
+        let controller = TextTableViewController()
+        NSLog("%@","\(controller)")
+        let ud = NSUserDefaults.standardUserDefaults()
+        if let data = ud.objectForKey("TEXTS") as? [String]
+        {controller.setTextData(data)
+            NSLog("%@","setTextData")}
+        self.presentViewController(controller, animated: true, completion: nil)
+    }
+    
+    func saveText(text: String){
+        let ud = NSUserDefaults.standardUserDefaults()
+        if var data = ud.objectForKey("TEXTS") as? [String]{
+            data.append(text)
+            ud.setObject(data, forKey: "TEXTS")
+        }
+        else {
+            var data = [String]()
+            data.append(text)
+            ud.setObject(data
+                , forKey: "TEXTS")
+        }
     }
 
 

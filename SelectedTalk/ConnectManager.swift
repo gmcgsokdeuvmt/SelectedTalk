@@ -48,7 +48,7 @@ class ConnectManager : NSObject {
         
         if session.connectedPeers.count > 0 {
             var toPeers = [MCPeerID]()
-            for i in 1...session.connectedPeers.count{
+            for i in 0..<session.connectedPeers.count{
                 if toSendList[i]{
                     toPeers.append(session.connectedPeers[i-1])
                 }
@@ -67,7 +67,7 @@ class ConnectManager : NSObject {
     func sendImage(image: UIImage,toSendList: [Bool]){
         if session.connectedPeers.count > 0 {
             var toPeers = [MCPeerID]()
-            for i in 1...session.connectedPeers.count{
+            for i in 0..<session.connectedPeers.count{
                 if toSendList[i]{
                     toPeers.append(session.connectedPeers[i-1])
                 }
