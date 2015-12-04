@@ -134,8 +134,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSLog("%@","\(controller)")
         let ud = NSUserDefaults.standardUserDefaults()
         if let data = ud.objectForKey("TEXTS") as? [String]
-        {controller.setTextData(data)
-            NSLog("%@","setTextData")}
+        {
+            controller.setTextData(data)
+            controller.setVC(self)
+            NSLog("%@","setTextData")
+        }
         self.presentViewController(controller, animated: true, completion: nil)
     }
     
@@ -199,5 +202,11 @@ extension ViewController : ConnectManagerDelegate {
         NSOperationQueue.mainQueue().addOperationWithBlock {
             self.imageView.image = image
         }
+    }
+}
+
+extension ViewController : TextTableViewControllerDelegate {
+    func textChanged(text: String) {
+        self.textView.text = text
     }
 }
